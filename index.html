@@ -1,0 +1,941 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mehedi Hasan Rony</title>
+<meta name="description" content="Portfolio of Mehedi Hasan Rony: law postgraduate, teacher and team captain based in Dhaka.">
+<meta name="theme-color" content="#2a3ce0">
+<meta property="og:type" content="profile">
+<meta property="og:title" content="Mehedi Hasan Rony">
+<meta property="og:description" content="Law postgraduate, teacher and team captain based in Dhaka.">
+<meta property="og:image" content="assets/photo.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232a3ce0'/%3E%3Ctext x='32' y='46' text-anchor='middle' font-family='Arial,sans-serif' font-weight='900' font-size='40' fill='%23ffc02e'%3ER%3C/text%3E%3C/svg%3E">
+<script>
+  /* থিম আগে থেকেই ঠিক করে নেওয়া, যাতে পাতা খোলার সময় রং ঝলকে না ওঠে */
+  (function () {
+    var theme = null;
+    try { theme = localStorage.getItem("theme"); } catch (e) {}
+    if (!theme) theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wdth,wght@75..125,100..800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #171a3d;
+    --paper: #f3f2fb;
+    --white: #ffffff;
+    --blue: #2a3ce0;
+    --blue-deep: #1c2aa8;
+    --marigold: #ffc02e;
+    --muted: #5a5e85;
+    --rule: #d6d5ea;
+
+    /* কাজ অনুযায়ী রং: থিম বদলালে শুধু এগুলো বদলায় */
+    --bg: var(--paper);
+    --surface: var(--white);
+    --text: var(--ink);
+    --accent: var(--blue);
+    --deep: var(--ink);
+    --wrap: 1120px;
+    --gutter: clamp(20px, 5vw, 56px);
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0d0f26;
+    --surface: #161a40;
+    --text: #ecebfb;
+    --accent: #95a2ff;
+    --muted: #a4a7cf;
+    --rule: #2d3162;
+    --deep: #07081a;
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    transition: background-color .25s ease, color .25s ease;
+    font-family: "Anek Bangla", "Nirmala UI", "Segoe UI", system-ui, sans-serif;
+    font-size: 1.125rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  html[lang="bn"] body { line-height: 1.75; }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 3px solid var(--marigold);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+  .wrap { max-width: var(--wrap); margin: 0 auto; padding-inline: var(--gutter); }
+
+  h1, h2, h3, p, ul, ol { margin: 0; }
+  ul, ol { padding: 0; list-style: none; }
+
+  h2 {
+    font-stretch: 112%;
+    font-weight: 750;
+    font-size: clamp(2rem, 5vw, 3.4rem);
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+    max-width: 18ch;
+  }
+  html[lang="bn"] h2 { line-height: 1.3; letter-spacing: 0; }
+
+  /* ---------- top bar ---------- */
+  .top {
+    position: fixed; inset: 0 0 auto 0; z-index: 5;
+    color: var(--white);
+    transition: background-color .25s ease, box-shadow .25s ease;
+  }
+  .top.scrolled { background: var(--ink); box-shadow: 0 2px 18px rgba(23,26,61,.25); }
+  .top.scrolled .wrap { padding-block: 12px; }
+  .top nav a[aria-current="true"] { border-color: var(--marigold); }
+  .top .wrap {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 16px; padding-block: 20px; transition: padding .25s ease;
+  }
+  .top nav { display: flex; gap: clamp(14px, 3vw, 32px); }
+  .top nav a {
+    text-decoration: none; font-weight: 500; font-size: 1rem;
+    border-bottom: 2px solid transparent; padding-bottom: 2px;
+  }
+  .top nav a:hover { border-color: var(--marigold); }
+
+  .tools { display: flex; align-items: center; gap: 10px; }
+  .theme {
+    width: 38px; height: 38px; border-radius: 50%; border: 0; cursor: pointer;
+    display: grid; place-items: center;
+    background: rgba(255,255,255,.14); color: var(--white);
+    transition: transform .2s ease;
+  }
+  .theme:hover { transform: rotate(20deg); }
+  .theme svg { width: 20px; height: 20px; }
+  .theme .sun { display: none; }
+  :root[data-theme="dark"] .theme .sun { display: block; }
+  :root[data-theme="dark"] .theme .moon { display: none; }
+  .lang {
+    display: inline-flex; background: rgba(255,255,255,.14);
+    border-radius: 999px; padding: 4px;
+  }
+  .lang button {
+    font: inherit; font-size: .95rem; font-weight: 600;
+    color: var(--white); background: none; border: 0; cursor: pointer;
+    padding: 4px 14px; border-radius: 999px;
+  }
+  .lang button[aria-pressed="true"] { background: var(--marigold); color: var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative; overflow: hidden;
+    background: var(--blue); color: var(--white);
+    padding-block: clamp(110px, 16vw, 170px) clamp(56px, 8vw, 96px);
+  }
+  .hero .wrap {
+    display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px); align-items: end;
+  }
+  .name {
+    font-weight: 800;
+    font-stretch: 125%;
+    font-size: clamp(3.3rem, 11vw, 8.6rem);
+    line-height: .88;
+    letter-spacing: -0.02em;
+  }
+  .name span { display: block; }
+  .name span:last-child { color: var(--marigold); }
+  html[lang="bn"] .name { line-height: 1.12; letter-spacing: 0; font-size: clamp(3rem, 10vw, 7.6rem); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .name span { animation: stretch 900ms cubic-bezier(.2,.8,.2,1) both; }
+    .name span:nth-child(2) { animation-delay: 90ms; }
+    .name span:nth-child(3) { animation-delay: 180ms; }
+    @keyframes stretch {
+      from { font-stretch: 75%; opacity: 0; }
+      to   { font-stretch: 125%; opacity: 1; }
+    }
+  }
+
+  .hero-line {
+    margin-top: clamp(20px, 3vw, 32px);
+    font-size: clamp(1.15rem, 2vw, 1.45rem);
+    line-height: 1.45; max-width: 34ch;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .btn {
+    display: inline-block; text-decoration: none;
+    font-weight: 650; font-size: 1.05rem;
+    padding: 12px 24px; border-radius: 999px;
+    border: 2px solid var(--marigold);
+    transition: transform .15s ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-solid { background: var(--marigold); color: var(--ink); }
+  .btn-line { color: var(--white); border-color: rgba(255,255,255,.6); }
+
+  .portrait { position: relative; justify-self: end; width: min(100%, 300px); }
+  /* হলুদ খিলান পেছনে, কাটা ছবি সামনে; মাথা খিলানের উপর দিয়ে বেরিয়ে থাকে */
+  .portrait::before {
+    content: ""; position: absolute; inset: 14% 0 0 0;
+    background: var(--marigold); border-radius: 160px 160px 20px 20px;
+  }
+  .portrait img {
+    position: relative; display: block; width: 100%; height: auto;
+    aspect-ratio: 316 / 374; object-fit: cover;
+    border-radius: 0 0 20px 20px;
+  }
+
+  /* ---------- sections ---------- */
+  section { padding-block: clamp(64px, 9vw, 120px); scroll-margin-top: 56px; }
+
+  /* ---------- choice buttons (filters, sports) ---------- */
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+  .pills button, .chips button, .copy {
+    font: inherit; font-weight: 600; font-size: 1rem; cursor: pointer;
+    padding: 6px 18px; border-radius: 999px;
+    border: 1.5px solid var(--text); background: transparent; color: var(--text);
+    transition: background-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  .pills button:hover, .chips button:hover { transform: translateY(-2px); }
+  .pills button[aria-pressed="true"], .chips button[aria-pressed="true"] {
+    background: var(--text); color: var(--bg);
+  }
+
+  .about-top {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    gap: clamp(24px, 5vw, 72px); align-items: start;
+  }
+  .about p { max-width: 58ch; }
+  .about p + p { margin-top: 1em; }
+
+  .strands {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: clamp(40px, 6vw, 72px);
+    border-top: 2px solid var(--text);
+  }
+  .strands li { padding: 24px 28px 0 0; }
+  .strands li + li { padding-left: 28px; border-left: 1px solid var(--rule); }
+  .strands h3 {
+    font-stretch: 112%; font-weight: 750; font-size: 1.5rem; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .strands p { font-size: 1.05rem; color: var(--muted); }
+
+  /* ---------- journey ---------- */
+  .journey { background: var(--surface); }
+  .timeline {
+    margin-top: clamp(36px, 5vw, 60px);
+    position: relative; padding-left: 34px;
+  }
+  /* রেখা: ধূসর পথ (::before) আর তার উপর স্ক্রলের সঙ্গে বাড়তে থাকা হলুদ অংশ (::after) */
+  .timeline::before, .timeline::after {
+    content: ""; position: absolute; left: 5px; top: 0; width: 3px; border-radius: 3px;
+  }
+  .timeline::before { bottom: 0; background: var(--rule); }
+  .timeline::after { height: calc(var(--progress, 0) * 100%); background: var(--marigold); }
+  .timeline > li { position: relative; }
+  .timeline > li::before {
+    content: ""; position: absolute; left: -36px; top: 36px; z-index: 1;
+    width: 17px; height: 17px; border-radius: 50%;
+    background: var(--surface); border: 3px solid var(--rule);
+    transition: border-color .2s ease, background-color .2s ease;
+  }
+  .timeline > li.reached::before { border-color: var(--marigold); background: var(--marigold); }
+  .timeline li {
+    display: grid; grid-template-columns: minmax(120px, 220px) minmax(0, 1fr);
+    gap: clamp(16px, 4vw, 48px);
+    padding-block: 28px; border-top: 1px solid var(--rule);
+  }
+  .timeline li:last-child { border-bottom: 1px solid var(--rule); }
+  .timeline li[hidden] { display: none; }
+  .when {
+    font-stretch: 80%; font-weight: 800; color: var(--accent);
+    font-size: clamp(1.9rem, 4.4vw, 3.2rem); line-height: 1;
+  }
+  .when small {
+    display: block; margin-top: 8px;
+    font-stretch: 100%; font-weight: 500; font-size: 1rem; color: var(--muted);
+  }
+  .timeline h3 { font-weight: 700; font-size: 1.45rem; line-height: 1.25; }
+  .place { color: var(--muted); margin-top: 2px; }
+  .points { margin-top: 12px; max-width: 62ch; }
+  .points li {
+    display: block; border: 0; padding: 0 0 0 20px; position: relative;
+  }
+  .points li:last-child { border: 0; }
+  .points li + li { margin-top: 6px; }
+  .points li::before {
+    content: ""; position: absolute; left: 0; top: .65em;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--marigold);
+  }
+  .now {
+    display: inline-block; vertical-align: middle; margin-left: 8px;
+    background: var(--marigold); color: var(--ink);
+    font-size: .85rem; font-weight: 700; padding: 1px 10px; border-radius: 999px;
+  }
+
+  /* ---------- skills ---------- */
+  .skills .wrap {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    gap: clamp(24px, 5vw, 72px); align-items: start;
+  }
+  .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+  .chips button { background: var(--surface); }
+  .chips button[aria-pressed="true"] { background: var(--text); }
+  .proof {
+    margin-top: 24px; padding: 18px 22px; max-width: 52ch;
+    background: var(--surface); border-left: 5px solid var(--marigold);
+    border-radius: 0 12px 12px 0; min-height: 7.5em;
+  }
+  .proof b { display: block; color: var(--accent); font-weight: 700; }
+  .langs { margin-top: 28px; color: var(--muted); }
+  .langs b { color: var(--text); font-weight: 700; }
+
+  /* ---------- field ---------- */
+  .field {
+    position: relative; overflow: hidden;
+    background: var(--marigold); color: var(--ink);
+    /* হলুদ অংশে লেখা সবসময় গাঢ় থাকবে, থিম যা-ই হোক */
+    --text: var(--ink); --bg: var(--white);
+  }
+  .field svg {
+    position: absolute; right: -6%; top: 50%; transform: translateY(-50%);
+    height: 150%; width: auto; opacity: .55; pointer-events: none;
+  }
+  .field .wrap { position: relative; }
+  .field ul { margin-top: clamp(28px, 4vw, 44px); max-width: 44ch; }
+  .field li {
+    font-size: clamp(1.2rem, 2.2vw, 1.5rem); line-height: 1.35; font-weight: 600;
+    padding-block: 18px; border-top: 2px solid var(--ink);
+  }
+  .field li span { display: block; font-size: 1.05rem; font-weight: 450; }
+  .field li { transition: opacity .2s ease; }
+  .field li.off { opacity: .32; }
+
+  /* ---------- more: research, voices, gallery ---------- */
+  .more-top {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 72px); align-items: start;
+  }
+  .more h3 {
+    font-stretch: 112%; font-weight: 750; font-size: 1.5rem; color: var(--accent);
+    margin-bottom: 12px;
+  }
+  .more .big { font-size: clamp(1.3rem, 2.4vw, 1.7rem); font-weight: 650; line-height: 1.3; }
+  .more .big + p { margin-top: 10px; color: var(--muted); max-width: 52ch; }
+  .more blockquote {
+    margin: 0; padding-left: 22px; border-left: 5px solid var(--marigold);
+    font-size: clamp(1.3rem, 2.4vw, 1.7rem); font-weight: 500; line-height: 1.35;
+  }
+  .more blockquote + p { margin-top: 12px; padding-left: 27px; color: var(--muted); }
+  .gallery {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px;
+    margin-top: 16px;
+  }
+  .gallery figure { margin: 0; }
+  .gallery img, .gallery .art {
+    display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 14px;
+  }
+  .gallery .art { display: grid; place-items: center; transition: transform .2s ease; }
+  .gallery .art svg { width: 46%; height: auto; }
+  .gallery figure:hover .art { transform: translateY(-4px); }
+  .art-law   { background: var(--blue); color: var(--white); }
+  .art-class { background: var(--ink); color: var(--marigold); }
+  .art-field { background: var(--marigold); color: var(--ink); }
+  :root[data-theme="dark"] .art-class { background: var(--surface); }
+  .gallery figcaption { margin-top: 10px; font-size: 1.05rem; color: var(--text); max-width: 30ch; }
+  .more-gallery { margin-top: clamp(40px, 6vw, 72px); }
+  .sample {
+    display: inline-block; margin-bottom: 28px;
+    background: var(--marigold); color: var(--ink);
+    font-size: .95rem; font-weight: 700; padding: 4px 14px; border-radius: 999px;
+  }
+  .sample[hidden] { display: none; }
+
+  /* ---------- contact ---------- */
+  .contact { background: var(--deep); color: var(--white); }
+  .contact h2 { max-width: 16ch; }
+  .mail {
+    display: inline-block; margin-top: clamp(24px, 4vw, 40px);
+    font-stretch: 90%; font-weight: 700; color: var(--marigold);
+    font-size: clamp(1.5rem, 5.4vw, 3.4rem); line-height: 1.15;
+    text-decoration-thickness: 3px; text-underline-offset: 8px;
+    overflow-wrap: anywhere;
+  }
+  .copy {
+    margin-left: 14px; vertical-align: middle;
+    border-color: rgba(255,255,255,.6); color: var(--white);
+  }
+  .copy.done { background: var(--marigold); border-color: var(--marigold); color: var(--ink); }
+  .ways {
+    display: flex; flex-wrap: wrap; gap: 14px 40px;
+    margin-top: 32px; font-size: 1.15rem;
+  }
+  .ways a { text-underline-offset: 5px; }
+  .ways [hidden] { display: none; }
+  .contact .actions { margin-top: 36px; }
+  footer {
+    margin-top: clamp(48px, 7vw, 88px); padding-top: 20px;
+    border-top: 1px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.65); font-size: .95rem;
+  }
+
+  /* ---------- small screens ---------- */
+  @media (max-width: 780px) {
+    .top nav { display: none; }
+    .hero .wrap, .about-top, .skills .wrap, .more-top { grid-template-columns: minmax(0, 1fr); }
+    .gallery { grid-template-columns: minmax(0, 1fr); }
+    .portrait { justify-self: start; width: min(70%, 240px); margin-top: 12px; }
+    .strands { grid-template-columns: minmax(0, 1fr); border-top: 0; }
+    .strands li, .strands li + li {
+      padding: 20px 0; border-left: 0; border-top: 2px solid var(--text);
+    }
+    .timeline li { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+    .field svg { opacity: .3; }
+  }
+
+  @media print {
+    .top, .actions, .field svg { display: none; }
+    .hero, .contact { background: none; color: var(--ink); padding-block: 24px; }
+    section { padding-block: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <nav aria-label="Sections">
+      <a href="#about" data-i18n="nav.about"></a>
+      <a href="#journey" data-i18n="nav.journey"></a>
+      <a href="#skills" data-i18n="nav.skills"></a>
+      <a href="#contact" data-i18n="nav.contact"></a>
+    </nav>
+    <div class="tools">
+      <button type="button" class="theme" id="theme" data-i18n-label="theme.label">
+        <svg class="moon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.5" fill="currentColor"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      </button>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-lang="bn" aria-pressed="false">বাংলা</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <div>
+        <h1 class="name" id="name"></h1>
+        <p class="hero-line" data-i18n="hero.line"></p>
+        <div class="actions">
+          <a class="btn btn-solid" href="assets/Mehedi_Hasan_Rony_CV.pdf" download data-i18n="cta.cv"></a>
+          <a class="btn btn-line" href="#contact" data-i18n="cta.contact"></a>
+        </div>
+      </div>
+      <div class="portrait">
+        <img src="assets/photo-cutout.png" width="632" height="748" alt="" data-i18n-alt="hero.alt">
+      </div>
+    </div>
+  </div>
+
+  <section class="about" id="about">
+    <div class="wrap about-top">
+      <h2 data-i18n="about.title"></h2>
+      <div>
+        <p data-i18n="about.p1"></p>
+        <p data-i18n="about.p2"></p>
+      </div>
+    </div>
+    <div class="wrap">
+      <ul class="strands">
+        <li><h3 data-i18n="s1.t"></h3><p data-i18n="s1.d"></p></li>
+        <li><h3 data-i18n="s2.t"></h3><p data-i18n="s2.d"></p></li>
+        <li><h3 data-i18n="s3.t"></h3><p data-i18n="s3.d"></p></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="journey" id="journey">
+    <div class="wrap">
+      <h2 data-i18n="journey.title"></h2>
+      <div class="pills" id="filter" role="group" data-i18n-label="filter.label">
+        <button type="button" data-kind="all" aria-pressed="true" data-i18n="filter.all"></button>
+        <button type="button" data-kind="work" aria-pressed="false" data-i18n="filter.work"></button>
+        <button type="button" data-kind="edu" aria-pressed="false" data-i18n="filter.edu"></button>
+      </div>
+      <ol class="timeline" reversed>
+        <li data-kind="work">
+          <div class="when"><span data-i18n="j1.when"></span><small data-i18n="j1.span"></small></div>
+          <div>
+            <h3><span data-i18n="j1.role"></span><span class="now" data-i18n="j1.now"></span></h3>
+            <p class="place" data-i18n="j1.place"></p>
+            <ul class="points">
+              <li data-i18n="j1.a"></li>
+              <li data-i18n="j1.b"></li>
+              <li data-i18n="j1.c"></li>
+            </ul>
+          </div>
+        </li>
+        <li data-kind="edu">
+          <div class="when"><span data-i18n="j2.when"></span></div>
+          <div>
+            <h3 data-i18n="j2.role"></h3>
+            <p class="place" data-i18n="j2.place"></p>
+          </div>
+        </li>
+        <li data-kind="work">
+          <div class="when"><span data-i18n="j3.when"></span><small data-i18n="j3.span"></small></div>
+          <div>
+            <h3 data-i18n="j3.role"></h3>
+            <p class="place" data-i18n="j3.place"></p>
+            <ul class="points">
+              <li data-i18n="j3.a"></li>
+              <li data-i18n="j3.b"></li>
+              <li data-i18n="j3.c"></li>
+            </ul>
+          </div>
+        </li>
+        <li data-kind="edu">
+          <div class="when"><span data-i18n="j4.when"></span></div>
+          <div>
+            <h3 data-i18n="j4.role"></h3>
+            <p class="place" data-i18n="j4.place"></p>
+          </div>
+        </li>
+        <li data-kind="edu">
+          <div class="when"><span data-i18n="j5.when"></span></div>
+          <div>
+            <h3 data-i18n="j5.role"></h3>
+            <p class="place" data-i18n="j5.place"></p>
+          </div>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="skills" id="skills">
+    <div class="wrap">
+      <h2 data-i18n="skills.title"></h2>
+      <div>
+        <ul class="chips" id="chips"></ul>
+        <p class="proof" id="proof" aria-live="polite"></p>
+        <p class="langs" data-i18n-html="skills.langs"></p>
+      </div>
+    </div>
+  </section>
+
+  <section class="field">
+    <svg id="court" viewBox="0 0 400 600" fill="none" stroke="#171a3d" stroke-width="3" aria-hidden="true"></svg>
+    <div class="wrap">
+      <h2 data-i18n="field.title"></h2>
+      <div class="pills" id="sports" role="group" data-i18n-label="sport.label">
+        <button type="button" data-sport="football" aria-pressed="true" data-i18n="sport.football"></button>
+        <button type="button" data-sport="basketball" aria-pressed="false" data-i18n="sport.basketball"></button>
+        <button type="button" data-sport="volleyball" aria-pressed="false" data-i18n="sport.volleyball"></button>
+      </div>
+      <ul id="roles">
+        <li data-sports="football"><span data-i18n="f1.where"></span><span style="display:inline;font-size:inherit;font-weight:inherit" data-i18n="f1.what"></span></li>
+        <li data-sports="football basketball volleyball"><span data-i18n="f2.where"></span><span style="display:inline;font-size:inherit;font-weight:inherit" data-i18n="f2.what"></span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="more" id="more">
+    <div class="wrap">
+      <p class="sample" id="sample" data-i18n="sample"></p>
+    </div>
+    <div class="wrap more-top">
+      <div>
+        <h3 data-i18n="research.title"></h3>
+        <p class="big" data-i18n="research.name"></p>
+        <p data-i18n="research.sum"></p>
+      </div>
+      <div>
+        <h3 data-i18n="voice.title"></h3>
+        <blockquote data-i18n="voice.quote"></blockquote>
+        <p data-i18n="voice.who"></p>
+      </div>
+    </div>
+    <div class="wrap more-gallery">
+      <h3 data-i18n="gallery.title"></h3>
+      <div class="gallery" id="gallery"></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <h2 data-i18n="contact.title"></h2>
+      <a class="mail" href="mailto:Mh.rony8597@gmail.com">Mh.rony8597@gmail.com</a>
+      <button type="button" class="copy" id="copy" data-i18n="copy"></button>
+      <div class="ways">
+        <a href="tel:+8801953311597" id="phone"></a>
+        <span data-i18n="contact.address"></span>
+        <a id="linkedin" target="_blank" rel="noopener" hidden>LinkedIn</a>
+        <a id="facebook" target="_blank" rel="noopener" hidden>Facebook</a>
+      </div>
+      <div class="actions">
+        <a class="btn btn-solid" href="assets/Mehedi_Hasan_Rony_CV.pdf" download data-i18n="cta.cv"></a>
+      </div>
+      <footer data-i18n="footer"></footer>
+    </div>
+  </section>
+</main>
+
+<script>
+/* =====================================================================
+   আপনার লিংক এখানে বসান / PUT YOUR LINKS HERE
+   উদ্ধৃতি চিহ্নের ভেতরে পুরো ঠিকানা লিখুন। ফাঁকা রাখলে লিংকটি পাতায় দেখাবে না।
+   উদাহরণ: linkedin: "https://www.linkedin.com/in/your-name"
+   ===================================================================== */
+const SOCIAL = {
+  linkedin: "https://www.linkedin.com/in/mehedi-hasan-rony-7668ba16a",
+  facebook: "https://www.facebook.com/profile.php?id=100070993009241"
+};
+
+/* =====================================================================
+   তিনটি জায়গার টাইল (আইন, শ্রেণিকক্ষ, মাঠ)
+   src ফাঁকা থাকলে আঁকা ছবি (art) দেখায়। নিজের ছবি assets ফোল্ডারে রেখে
+   src-এ নাম বসালে আঁকা ছবির জায়গায় সেটি দেখাবে, যেমন src: "assets/class.jpg"
+   ===================================================================== */
+const SAMPLE_MODE = false;
+const GALLERY = [
+  { src: "", art: "law",   caption: "gallery.c1" },
+  { src: "", art: "class", caption: "gallery.c2" },
+  { src: "", art: "field", caption: "gallery.c3" }
+];
+
+const ART = {
+  law: `<path d="M60 14v58M40 74h40M28 26h64"/><path d="M16 50l12-24 12 24M80 50l12-24 12 24"/>
+        <path d="M14 50a14 9 0 0 0 28 0zM78 50a14 9 0 0 0 28 0z"/>`,
+  class: `<rect x="22" y="14" width="76" height="46" rx="3"/><path d="M34 29h36M34 40h52M34 50h24"/>
+        <path d="M40 60l-8 18M80 60l8 18"/>`,
+  field: `<circle cx="60" cy="45" r="30"/><path d="M60 33l11 8-4 13H53l-4-13z"/>
+        <path d="M60 33V15M71 41l17-6M67 54l11 15M53 54L42 69M49 41l-17-6"/>`
+};
+
+/* পাতার সব লেখা: প্রতিটি key-এর জন্য ইংরেজি (en) ও বাংলা (bn) */
+const TEXT = {
+  "name":          { en: ["Mehedi", "Hasan", "Rony"], bn: ["মেহেদী", "হাসান", "রনি"] },
+  "nav.about":     { en: "About", bn: "পরিচয়" },
+  "nav.journey":   { en: "Journey", bn: "পথচলা" },
+  "nav.skills":    { en: "Skills", bn: "দক্ষতা" },
+  "nav.contact":   { en: "Contact", bn: "যোগাযোগ" },
+
+  "hero.line":     { en: "Law postgraduate, teacher and team captain in Dhaka. I research carefully, explain clearly and bring a team to its goal.",
+                     bn: "আইনে স্নাতকোত্তর, শিক্ষক ও দলনেতা; থাকি ঢাকায়। যত্ন নিয়ে গবেষণা করি, সহজ করে বোঝাই, আর দলকে লক্ষ্যে পৌঁছে দিই।" },
+  "hero.alt":      { en: "Portrait of Mehedi Hasan Rony", bn: "মেহেদী হাসান রনির ছবি" },
+  "cta.cv":        { en: "Download CV", bn: "সিভি ডাউনলোড করুন" },
+  "cta.contact":   { en: "Get in touch", bn: "যোগাযোগ করুন" },
+
+  "about.title":   { en: "Trained in law, tested in the classroom, shaped on the field.",
+                     bn: "আইনে শিক্ষা, শ্রেণিকক্ষে অভিজ্ঞতা, মাঠে গড়ে ওঠা।" },
+  "about.p1":      { en: "I am an analytical and adaptable postgraduate with an LL.M in International Law from Rajshahi University. Six years at Comilla Cadet College gave me discipline early; law school taught me to research a problem properly before answering it.",
+                     bn: "আমি রাজশাহী বিশ্ববিদ্যালয় থেকে আন্তর্জাতিক আইনে এলএল.এম সম্পন্ন করেছি। কুমিল্লা ক্যাডেট কলেজের ছয় বছর আমাকে শুরুতেই শৃঙ্খলা শিখিয়েছে; আর আইন পড়তে গিয়ে শিখেছি, উত্তর দেওয়ার আগে সমস্যাটি ভালোভাবে খতিয়ে দেখতে হয়।" },
+  "about.p2":      { en: "Today I lead a team and teach at Masterwin Academy. I am open to roles in law, education, banking and management where careful work and clear communication matter.",
+                     bn: "বর্তমানে মাস্টারউইন একাডেমিতে একটি দল পরিচালনা করি এবং পড়াই। আইন, শিক্ষা, ব্যাংকিং ও ব্যবস্থাপনা, যেখানে যত্নশীল কাজ আর স্পষ্ট যোগাযোগের মূল্য আছে, এমন যেকোনো ক্ষেত্রে কাজ করতে আগ্রহী।" },
+
+  "s1.t":          { en: "Law", bn: "আইন" },
+  "s1.d":          { en: "LL.B and LL.M from Rajshahi University, plus six months of case research and drafting at Rajshahi Bar.",
+                     bn: "রাজশাহী বিশ্ববিদ্যালয় থেকে এলএল.বি ও এলএল.এম; সঙ্গে রাজশাহী বারে ছয় মাস মামলার গবেষণা ও নথি প্রস্তুতের অভিজ্ঞতা।" },
+  "s2.t":          { en: "Teaching", bn: "শিক্ষকতা" },
+  "s2.d":          { en: "Regular lessons and presentations to groups at Masterwin Academy, built around clear structure.",
+                     bn: "মাস্টারউইন একাডেমিতে নিয়মিত ক্লাস ও উপস্থাপনা, যার ভিত্তি গোছানো ও সহজ ব্যাখ্যা।" },
+  "s3.t":          { en: "Leadership", bn: "নেতৃত্ব" },
+  "s3.d":          { en: "Captain and team lead from cadet college through university, and now of a working team.",
+                     bn: "ক্যাডেট কলেজ থেকে বিশ্ববিদ্যালয় পর্যন্ত অধিনায়ক ও দলনেতা; এখন কর্মক্ষেত্রেও একটি দলের নেতৃত্বে।" },
+
+  "journey.title": { en: "The journey so far", bn: "এ পর্যন্ত পথচলা" },
+  "j1.when":       { en: "2026", bn: "২০২৬" },
+  "j1.span":       { en: "January 2026 to present", bn: "জানুয়ারি ২০২৬ থেকে বর্তমান" },
+  "j1.role":       { en: "Executive and Teacher", bn: "এক্সিকিউটিভ ও শিক্ষক" },
+  "j1.now":        { en: "Now", bn: "বর্তমান" },
+  "j1.place":      { en: "Masterwin Academy, Mirpur-10, Dhaka", bn: "মাস্টারউইন একাডেমি, মিরপুর-১০, ঢাকা" },
+  "j1.a":          { en: "Lead and coordinate a team, consistently meeting organisational goals while keeping performance standards high.",
+                     bn: "একটি দল পরিচালনা ও সমন্বয় করি; কাজের মান বজায় রেখে প্রতিষ্ঠানের লক্ষ্য নিয়মিত পূরণ করি।" },
+  "j1.b":          { en: "Deliver regular presentations and instruction to groups.",
+                     bn: "দলগতভাবে নিয়মিত ক্লাস নিই ও উপস্থাপনা করি।" },
+  "j1.c":          { en: "Introduced new administrative procedures that improved efficiency and reduced costs.",
+                     bn: "নতুন প্রশাসনিক পদ্ধতি চালু করেছি, যাতে কাজের গতি বেড়েছে ও খরচ কমেছে।" },
+
+  "j2.when":       { en: "2024", bn: "২০২৪" },
+  "j2.role":       { en: "LL.M in International Law", bn: "এলএল.এম, আন্তর্জাতিক আইন" },
+  "j2.place":      { en: "Rajshahi University. CGPA 3.25 out of 4.00", bn: "রাজশাহী বিশ্ববিদ্যালয়। সিজিপিএ ৪.০০-এর মধ্যে ৩.২৫" },
+
+  "j3.when":       { en: "2023", bn: "২০২৩" },
+  "j3.span":       { en: "November 2023 to April 2024", bn: "নভেম্বর ২০২৩ থেকে এপ্রিল ২০২৪" },
+  "j3.role":       { en: "Legal Intern", bn: "লিগ্যাল ইন্টার্ন" },
+  "j3.place":      { en: "Rajshahi Bar, Rajshahi", bn: "রাজশাহী বার, রাজশাহী" },
+  "j3.a":          { en: "Conducted legal research and analysis to support case strategy and preparation.",
+                     bn: "মামলার কৌশল ও প্রস্তুতির জন্য আইনি গবেষণা ও বিশ্লেষণ করেছি।" },
+  "j3.b":          { en: "Prepared structured documentation with close attention to accuracy and detail.",
+                     bn: "নির্ভুলতা ও খুঁটিনাটির দিকে নজর রেখে গোছানো নথিপত্র তৈরি করেছি।" },
+  "j3.c":          { en: "Liaised with clients and senior counsel.",
+                     bn: "মক্কেল ও জ্যেষ্ঠ আইনজীবীদের সঙ্গে যোগাযোগ রক্ষা করেছি।" },
+
+  "j4.when":       { en: "2023", bn: "২০২৩" },
+  "j4.role":       { en: "LL.B (Honours)", bn: "এলএল.বি (সম্মান)" },
+  "j4.place":      { en: "Rajshahi University. CGPA 3.07 out of 4.00", bn: "রাজশাহী বিশ্ববিদ্যালয়। সিজিপিএ ৪.০০-এর মধ্যে ৩.০৭" },
+
+  "j5.when":       { en: "2016", bn: "২০১৬" },
+  "j5.role":       { en: "SSC and HSC, Science", bn: "এসএসসি ও এইচএসসি, বিজ্ঞান" },
+  "j5.place":      { en: "Comilla Cadet College. GPA 5.00 in both", bn: "কুমিল্লা ক্যাডেট কলেজ। দুটিতেই জিপিএ ৫.০০" },
+
+  "skills.title":  { en: "What I work with", bn: "যেসব দক্ষতা নিয়ে কাজ করি" },
+  "skills.list":   { en: ["Analytical and research skills", "Communication and presentation", "Leadership and team coordination", "Adaptability and fast learning", "Report and documentation writing", "Problem-solving", "MS Word, Excel and PowerPoint"],
+                     bn: ["বিশ্লেষণ ও গবেষণা", "যোগাযোগ ও উপস্থাপনা", "নেতৃত্ব ও দল সমন্বয়", "মানিয়ে নেওয়া ও দ্রুত শেখা", "প্রতিবেদন ও নথি লেখা", "সমস্যা সমাধান", "এমএস ওয়ার্ড, এক্সেল ও পাওয়ারপয়েন্ট"] },
+  "skills.langs":  { en: "<b>Bangla</b> native. <b>English</b> fluent in speaking, listening and writing.",
+                     bn: "<b>বাংলা</b> মাতৃভাষা। <b>ইংরেজি</b> বলা, শোনা ও লেখায় সাবলীল।" },
+
+  "skills.proof": { en: ["At Rajshahi Bar I assisted senior lawyers with the legal research behind their case preparation. My LL.M in International Law was built on the same habit: read the sources first, then argue.",
+                          "I plan and deliver classes at Masterwin Academy and adapt how I explain to different learners. At Rajshahi Bar I spoke with clients directly, gathering information and giving them case updates.",
+                          "I lead a team at Masterwin Academy that consistently meets the academy's goals. Before that I captained the inter-house football team at Comilla Cadet College and led university teams in three sports.",
+                          "I moved from science at cadet college to law at university, then from a courtroom internship into teaching and administration, and had to learn each one from the start.",
+                          "At Rajshahi Bar I prepared and organised case documentation so files were accurate and ready for trial, and supported case-file processing on assigned matters.",
+                          "At Masterwin Academy I handle day-to-day queries and concerns from students and guardians, and I introduced new administrative procedures that improved efficiency and reduced costs.",
+                          "Word for documents and reports, Excel for records and lists, PowerPoint for lessons and presentations."],
+                     bn: ["রাজশাহী বারে জ্যেষ্ঠ আইনজীবীদের মামলা প্রস্তুতির জন্য আইনি গবেষণায় সহায়তা করেছি। আন্তর্জাতিক আইনে এলএল.এম করতে গিয়েও একই অভ্যাস গড়ে উঠেছে: আগে সূত্র পড়া, তারপর যুক্তি।",
+                          "মাস্টারউইন একাডেমিতে ক্লাসের পরিকল্পনা করি ও ক্লাস নিই, শিক্ষার্থীভেদে বোঝানোর ধরন বদলাই। রাজশাহী বারে মক্কেলদের সঙ্গে সরাসরি কথা বলে তথ্য সংগ্রহ করেছি ও মামলার অগ্রগতি জানিয়েছি।",
+                          "মাস্টারউইন একাডেমিতে এমন একটি দলের নেতৃত্ব দিই, যা নিয়মিত প্রতিষ্ঠানের লক্ষ্য পূরণ করে। তার আগে কুমিল্লা ক্যাডেট কলেজে আন্তঃহাউস ফুটবল দলের অধিনায়ক ছিলাম, আর বিশ্ববিদ্যালয়ে তিনটি খেলায় দলনেতা।",
+                          "ক্যাডেট কলেজে বিজ্ঞান থেকে বিশ্ববিদ্যালয়ে আইন, তারপর আদালতের ইন্টার্নশিপ থেকে শিক্ষকতা ও প্রশাসন; প্রতিটি ক্ষেত্রই শুরু থেকে শিখে নিতে হয়েছে।",
+                          "রাজশাহী বারে মামলার নথি এমনভাবে প্রস্তুত ও গুছিয়েছি, যাতে ফাইল নির্ভুল ও শুনানির জন্য তৈরি থাকে; দায়িত্বে থাকা মামলার ফাইল প্রক্রিয়াকরণেও সহায়তা করেছি।",
+                          "মাস্টারউইন একাডেমিতে শিক্ষার্থী ও অভিভাবকদের প্রতিদিনের প্রশ্ন ও সমস্যার সমাধান করি; নতুন প্রশাসনিক পদ্ধতিও চালু করেছি, যাতে কাজের গতি বেড়েছে ও খরচ কমেছে।",
+                          "নথি ও প্রতিবেদনের জন্য ওয়ার্ড, হিসাব ও তালিকার জন্য এক্সেল, ক্লাস ও উপস্থাপনার জন্য পাওয়ারপয়েন্ট।"] },
+  "filter.label":  { en: "Show in the journey", bn: "পথচলায় যা দেখাবে" },
+  "filter.all":    { en: "Everything", bn: "সব" },
+  "filter.work":   { en: "Work", bn: "কর্মজীবন" },
+  "filter.edu":    { en: "Education", bn: "শিক্ষা" },
+  "sport.label":   { en: "Choose a sport", bn: "খেলা বেছে নিন" },
+  "sport.football":   { en: "Football", bn: "ফুটবল" },
+  "sport.basketball": { en: "Basketball", bn: "বাস্কেটবল" },
+  "sport.volleyball": { en: "Volleyball", bn: "ভলিবল" },
+  "copy":          { en: "Copy email", bn: "ইমেইল কপি করুন" },
+  "copied":        { en: "Copied", bn: "কপি হয়েছে" },
+
+  "theme.label":   { en: "Switch between light and dark", bn: "আলো ও অন্ধকার থিম বদলান" },
+  "sample":        { en: "Sample section: replace the bracketed text with your own", bn: "নমুনা অংশ: বন্ধনীর লেখার জায়গায় নিজের তথ্য বসান" },
+  "research.title": { en: "Field of study", bn: "পড়াশোনার ক্ষেত্র" },
+  "research.name": { en: "International Law, LL.M, Rajshahi University", bn: "আন্তর্জাতিক আইন, এলএল.এম, রাজশাহী বিশ্ববিদ্যালয়" },
+  "research.sum":  { en: "After a general law degree I chose international law for my master's: the rules that govern how states deal with each other, settle disputes and protect people's rights across borders.",
+                     bn: "আইনে স্নাতকের পর স্নাতকোত্তরে বেছে নিয়েছি আন্তর্জাতিক আইন: রাষ্ট্রগুলো কীভাবে একে অপরের সঙ্গে আচরণ করে, বিরোধ মেটায় এবং সীমান্ত পেরিয়ে মানুষের অধিকার রক্ষা করে, তার নিয়মকানুন।" },
+  "voice.title":   { en: "How I work", bn: "আমার কাজের ধরন" },
+  "voice.quote":   { en: "Understand the problem first, explain it simply, then get everyone moving in the same direction.",
+                     bn: "আগে সমস্যাটা বুঝি, তারপর সহজ করে বোঝাই, শেষে সবাইকে এক লক্ষ্যে নিয়ে এগোই।" },
+  "voice.who":     { en: "The same habit in a case file, a classroom and a team.", bn: "মামলার ফাইল, শ্রেণিকক্ষ আর দল, তিন জায়গাতেই একই অভ্যাস।" },
+  "gallery.title": { en: "Three places that shaped me", bn: "যে তিন জায়গা আমাকে গড়েছে" },
+  "gallery.c1":    { en: "Rajshahi Bar: six months of case research and documentation", bn: "রাজশাহী বার: ছয় মাস মামলার গবেষণা ও নথি প্রস্তুত" },
+  "gallery.c2":    { en: "Masterwin Academy: teaching and leading a team", bn: "মাস্টারউইন একাডেমি: শিক্ষকতা ও দল পরিচালনা" },
+  "gallery.c3":    { en: "Comilla Cadet College and Rajshahi University: captain and team lead", bn: "কুমিল্লা ক্যাডেট কলেজ ও রাজশাহী বিশ্ববিদ্যালয়: অধিনায়ক ও দলনেতা" },
+
+  "field.title":   { en: "Captain before colleague", bn: "সহকর্মী হওয়ার আগে অধিনায়ক" },
+  "f1.where":      { en: "Comilla Cadet College", bn: "কুমিল্লা ক্যাডেট কলেজ" },
+  "f1.what":       { en: "Captain, inter-house football team", bn: "আন্তঃহাউস ফুটবল দলের অধিনায়ক" },
+  "f2.where":      { en: "Rajshahi University tournaments", bn: "রাজশাহী বিশ্ববিদ্যালয়ের টুর্নামেন্ট" },
+  "f2.what":       { en: "Team lead in football, basketball and volleyball", bn: "ফুটবল, বাস্কেটবল ও ভলিবলে দলনেতা" },
+
+  "contact.title": { en: "Let's talk about your team.", bn: "আপনার দল নিয়ে কথা বলি।" },
+  "contact.phone": { en: "+880 1953-311597", bn: "+৮৮০ ১৯৫৩-৩১১৫৯৭" },
+  "contact.address": { en: "West Shewrapara, Kafrul, Dhaka", bn: "পশ্চিম শেওড়াপাড়া, কাফরুল, ঢাকা" },
+  "footer":        { en: "References available on request.", bn: "অনুরোধ সাপেক্ষে রেফারেন্স দেওয়া হবে।" }
+};
+
+/* কোন দক্ষতা ও কোন খেলা এখন বাছাই করা আছে */
+let currentSkill = 0;
+let currentSport = "football";
+
+const COURTS = {
+  football: `<rect x="20" y="20" width="360" height="560"/><line x1="20" y1="300" x2="380" y2="300"/>
+    <circle cx="200" cy="300" r="70"/><rect x="110" y="20" width="180" height="90"/><rect x="110" y="490" width="180" height="90"/>
+    <rect x="160" y="20" width="80" height="34"/><rect x="160" y="546" width="80" height="34"/>`,
+  basketball: `<rect x="20" y="20" width="360" height="560"/><line x1="20" y1="300" x2="380" y2="300"/>
+    <circle cx="200" cy="300" r="46"/>
+    <rect x="145" y="20" width="110" height="130"/><path d="M154 150a46 46 0 0 0 92 0"/>
+    <path d="M52 20v70a148 148 0 0 0 296 0v-70"/><circle cx="200" cy="52" r="10"/>
+    <rect x="145" y="450" width="110" height="130"/><path d="M154 450a46 46 0 0 1 92 0"/>
+    <path d="M52 580v-70a148 148 0 0 1 296 0v70"/><circle cx="200" cy="548" r="10"/>`,
+  volleyball: `<rect x="20" y="20" width="360" height="560"/>
+    <line x1="4" y1="300" x2="396" y2="300" stroke-width="7"/>
+    <line x1="20" y1="207" x2="380" y2="207"/><line x1="20" y1="393" x2="380" y2="393"/>`
+};
+
+function currentLang() { return document.documentElement.lang; }
+
+function renderSkills() {
+  const list = TEXT["skills.list"][currentLang()];
+  document.getElementById("chips").innerHTML = list.map((skill, i) =>
+    `<li><button type="button" data-skill="${i}" aria-pressed="${i === currentSkill}">${skill}</button></li>`
+  ).join("");
+  document.getElementById("proof").innerHTML =
+    `<b>${list[currentSkill]}</b>${TEXT["skills.proof"][currentLang()][currentSkill]}`;
+}
+
+function showSport(sport) {
+  currentSport = sport;
+  document.getElementById("court").innerHTML = COURTS[sport];
+  document.querySelectorAll("#sports button").forEach(btn => {
+    btn.setAttribute("aria-pressed", String(btn.dataset.sport === sport));
+  });
+  document.querySelectorAll("#roles li").forEach(li => {
+    li.classList.toggle("off", !li.dataset.sports.split(" ").includes(sport));
+  });
+}
+
+function renderGallery() {
+  document.getElementById("gallery").innerHTML = GALLERY.map(item => {
+    const caption = TEXT[item.caption][currentLang()];
+    const picture = item.src
+      ? `<img src="${item.src}" alt="" loading="lazy">`
+      : `<div class="art art-${item.art}"><svg viewBox="0 0 120 90" fill="none" stroke="currentColor"
+           stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ART[item.art]}</svg></div>`;
+    return `<figure>${picture}<figcaption>${caption}</figcaption></figure>`;
+  }).join("");
+}
+
+/* পথচলার রেখা: পর্দার ৬০% উচ্চতা পর্যন্ত যতটুকু টাইমলাইন পেরিয়েছে, ততটুকু হলুদ */
+function drawJourneyLine() {
+  const timeline = document.querySelector(".timeline");
+  const box = timeline.getBoundingClientRect();
+  const mark = window.innerHeight * 0.6;
+  const progress = Math.min(1, Math.max(0, (mark - box.top) / box.height));
+  timeline.style.setProperty("--progress", progress);
+  timeline.querySelectorAll(":scope > li").forEach(li => {
+    li.classList.toggle("reached", li.getBoundingClientRect().top + 44 < mark);
+  });
+}
+
+function filterJourney(kind) {
+  document.querySelectorAll("#filter button").forEach(btn => {
+    btn.setAttribute("aria-pressed", String(btn.dataset.kind === kind));
+  });
+  document.querySelectorAll(".timeline > li").forEach(li => {
+    li.hidden = kind !== "all" && li.dataset.kind !== kind;
+  });
+  drawJourneyLine();
+}
+
+function setLanguage(lang) {
+  document.documentElement.lang = lang;
+  document.title = TEXT.name[lang].join(" ");
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    el.textContent = TEXT[el.dataset.i18n][lang];
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el => {
+    el.innerHTML = TEXT[el.dataset.i18nHtml][lang];
+  });
+  document.querySelectorAll("[data-i18n-alt]").forEach(el => {
+    el.alt = TEXT[el.dataset.i18nAlt][lang];
+  });
+
+  document.getElementById("name").innerHTML =
+    TEXT.name[lang].map(part => `<span>${part}</span>`).join("");
+  document.querySelectorAll("[data-i18n-label]").forEach(el => {
+    el.setAttribute("aria-label", TEXT[el.dataset.i18nLabel][lang]);
+  });
+  renderSkills();
+  renderGallery();
+  document.getElementById("phone").textContent = TEXT["contact.phone"][lang];
+
+  document.querySelectorAll(".lang button").forEach(btn => {
+    btn.setAttribute("aria-pressed", String(btn.dataset.lang === lang));
+  });
+  try { localStorage.setItem("lang", lang); } catch (e) {}
+}
+
+document.querySelectorAll(".lang button").forEach(btn => {
+  btn.addEventListener("click", () => setLanguage(btn.dataset.lang));
+});
+
+document.getElementById("chips").addEventListener("click", event => {
+  const btn = event.target.closest("button");
+  if (!btn) return;
+  currentSkill = Number(btn.dataset.skill);
+  renderSkills();
+  document.querySelector(`#chips [data-skill="${currentSkill}"]`).focus();
+});
+
+document.querySelectorAll("#sports button").forEach(btn => {
+  btn.addEventListener("click", () => showSport(btn.dataset.sport));
+});
+
+document.querySelectorAll("#filter button").forEach(btn => {
+  btn.addEventListener("click", () => filterJourney(btn.dataset.kind));
+});
+
+/* ইমেইল কপি */
+const copyBtn = document.getElementById("copy");
+copyBtn.addEventListener("click", async () => {
+  const email = "Mh.rony8597@gmail.com";
+  try {
+    await navigator.clipboard.writeText(email);
+  } catch (e) {
+    const box = document.createElement("textarea");
+    box.value = email;
+    document.body.appendChild(box);
+    box.select();
+    document.execCommand("copy");
+    box.remove();
+  }
+  copyBtn.textContent = TEXT.copied[currentLang()];
+  copyBtn.classList.add("done");
+  setTimeout(() => {
+    copyBtn.textContent = TEXT.copy[currentLang()];
+    copyBtn.classList.remove("done");
+  }, 2000);
+});
+
+/* স্ক্রল করলে উপরের বার গাঢ় হয়, আর যে অংশে আছেন সেটি মেনুতে চিহ্নিত হয় */
+const topBar = document.querySelector(".top");
+const onScroll = () => {
+  topBar.classList.toggle("scrolled", window.scrollY > 40);
+  drawJourneyLine();
+};
+window.addEventListener("resize", drawJourneyLine);
+window.addEventListener("scroll", onScroll, { passive: true });
+onScroll();
+
+const navLinks = document.querySelectorAll(".top nav a");
+const watcher = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    navLinks.forEach(a => {
+      a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + entry.target.id));
+    });
+  });
+}, { rootMargin: "-45% 0px -50% 0px" });
+document.querySelectorAll("section[id]").forEach(sec => watcher.observe(sec));
+
+showSport(currentSport);
+
+/* থিম বদলানো */
+document.getElementById("theme").addEventListener("click", () => {
+  const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  document.documentElement.dataset.theme = next;
+  try { localStorage.setItem("theme", next); } catch (e) {}
+});
+
+document.getElementById("sample").hidden = !SAMPLE_MODE;
+
+for (const [id, url] of Object.entries(SOCIAL)) {
+  if (url) {
+    const link = document.getElementById(id);
+    link.href = url;
+    link.hidden = false;
+  }
+}
+
+let saved = null;
+try { saved = localStorage.getItem("lang"); } catch (e) {}
+setLanguage(saved === "bn" ? "bn" : "en");
+</script>
+</body>
+</html>
