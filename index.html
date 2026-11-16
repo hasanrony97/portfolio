@@ -955,7 +955,8 @@ if (hasMouse && wantsMotion) {
     el.style.setProperty("--o", opacity);
     el.setAttribute("aria-hidden", "true");
     document.body.appendChild(el);
-    return { el, x: 0, y: 0 };
+    /* প্রতিটি প্রতিধ্বনি আগেরটির চেয়ে ২০% ছোট: ১, ০.৮, ০.৬, ০.৪ */
+    return { el, x: 0, y: 0, scale: 1 - i * 0.2 };
   });
   const ring = rings[0].el;
 
@@ -969,7 +970,7 @@ if (hasMouse && wantsMotion) {
       const ease = i === 0 ? 0.2 : 0.3;
       r.x += (leadX - r.x) * ease;
       r.y += (leadY - r.y) * ease;
-      r.el.style.transform = `translate3d(${r.x}px, ${r.y}px, 0)`;
+      r.el.style.transform = `translate3d(${r.x}px, ${r.y}px, 0) scale(${r.scale})`;
       leadX = r.x; leadY = r.y;
     });
     const last = rings[rings.length - 1];
