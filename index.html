@@ -956,7 +956,7 @@ if (hasMouse && wantsMotion) {
     el.setAttribute("aria-hidden", "true");
     document.body.appendChild(el);
     /* প্রতিটি প্রতিধ্বনি আগেরটির চেয়ে ২০% ছোট: ১, ০.৮, ০.৬, ০.৪ */
-    return { el, x: 0, y: 0, scale: 1 - i * 0.2 };
+    return { el, x: 0, y: 0, scale: 1 - i * 0.2, base: opacity };
   });
   const ring = rings[0].el;
 
@@ -967,7 +967,11 @@ if (hasMouse && wantsMotion) {
   const SIZE = 30;   /* মূল বৃত্তের ব্যাস (CSS-এর সঙ্গে মিল রেখে) */
   const SPACE = 5;   /* দুই বৃত্তের কিনারার মাঝের ফাঁক */
 
+  let lastMove = 0, restTimer = 0;
+  const REST_AFTER = 140;   /* এত মিলিসেকেন্ড মাউস না নড়লে "থেমেছে" ধরা হয় */
+
   const follow = () => {
+    const resting = performance.now() - lastMove > REST_AFTER;
     let moved = 0;
     rings.forEach((r, i) => {
       let goalX = targetX, goalY = targetY;
@@ -979,13 +983,16 @@ if (hasMouse && wantsMotion) {
         const gap = prevRadius + (SIZE * r.scale) / 2 + SPACE;
         const dx = prev.x - r.x, dy = prev.y - r.y;
         const distance = Math.hypot(dx, dy);
-        if (distance <= gap) { goalX = r.x; goalY = r.y; }
+        if (resting) { goalX = prev.x; goalY = prev.y; }          /* থামলে: আগের বৃত্তের কেন্দ্রে ফিরে যায় */
+        else if (distance <= gap) { goalX = r.x; goalY = r.y; }
         else {
           goalX = prev.x - (dx / distance) * gap;
           goalY = prev.y - (dy / distance) * gap;
         }
+        /* যত কাছে আসে তত ঝাপসা; পুরো মিশে গেলে অদৃশ্য */
+        r.el.style.setProperty("--o", r.base * Math.min(1, distance / gap));
       }
-      const ease = i === 0 ? 0.2 : 0.35;
+      const ease = i === 0 ? 0.2 : (resting ? 0.14 : 0.35);
       const stepX = (goalX - r.x) * ease, stepY = (goalY - r.y) * ease;
       r.x += stepX;
       r.y += stepY;
@@ -1010,7 +1017,12 @@ if (hasMouse && wantsMotion) {
       });
     }
     ring.classList.toggle("big", Boolean(event.target.closest("a, button")));
-    if (!running) { running = true; requestAnimationFrame(follow); }
+    lastMove = performance.now();
+    const wake = () => { if (!running) { running = true; requestAnimationFrame(follow); } };
+    wake();
+    /* মাউস থামার একটু পরে আবার জাগানো, যাতে প্রতিধ্বনিগুলো ফিরে এসে মিশে যায় */
+    clearTimeout(restTimer);
+    restTimer = setTimeout(wake, REST_AFTER + 20);
   }, { passive: true });
   document.documentElement.addEventListener("pointerleave", () => {
     rings.forEach(r => r.el.classList.remove("on"));
