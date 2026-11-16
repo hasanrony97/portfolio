@@ -388,6 +388,31 @@
     color: rgba(255,255,255,.65); font-size: .95rem;
   }
 
+  /* ---------- pointer animation ---------- */
+  /* মাউসের পেছনে চলা বৃত্ত; difference মোডে যেকোনো রঙের উপর দেখা যায় */
+  .cursor {
+    position: fixed; left: 0; top: 0; z-index: 20; pointer-events: none;
+    width: 30px; height: 30px; margin: -15px 0 0 -15px;
+    border: 2px solid #fff; border-radius: 50%;
+    mix-blend-mode: difference; opacity: 0;
+    transition: width .2s ease, height .2s ease, margin .2s ease,
+                opacity .2s ease, background-color .2s ease;
+  }
+  .cursor.on { opacity: 1; }
+  .cursor.big {
+    width: 64px; height: 64px; margin: -32px 0 0 -32px;
+    background: rgba(255,255,255,.18);
+  }
+  /* হিরো অংশে মাউসের নিচে নরম আলো */
+  .hero::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(460px circle at var(--mx, 50%) var(--my, 50%),
+                rgba(255,255,255,.2), transparent 70%);
+    opacity: 0; transition: opacity .35s ease;
+  }
+  .hero.lit::after { opacity: 1; }
+  .portrait img { transition: transform .25s ease-out; }
+
   /* ---------- small screens ---------- */
   @media (max-width: 780px) {
     .top nav { display: none; }
@@ -916,6 +941,54 @@ const watcher = new IntersectionObserver(entries => {
 document.querySelectorAll("section[id]").forEach(sec => watcher.observe(sec));
 
 showSport(currentSport);
+
+/* মাউস পয়েন্টারের অ্যানিমেশন: শুধু মাউস আছে এমন ডিভাইসে, আর "কম নড়াচড়া" চাইলে বন্ধ */
+const hasMouse = matchMedia("(hover: hover) and (pointer: fine)").matches;
+const wantsMotion = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+if (hasMouse && wantsMotion) {
+  const ring = document.createElement("div");
+  ring.className = "cursor";
+  ring.setAttribute("aria-hidden", "true");
+  document.body.appendChild(ring);
+
+  let targetX = 0, targetY = 0, x = 0, y = 0, running = false;
+
+  /* বৃত্তটি প্রতি ফ্রেমে বাকি দূরত্বের ২০% এগোয়, তাই একটু পিছিয়ে নরমভাবে অনুসরণ করে */
+  const follow = () => {
+    x += (targetX - x) * 0.2;
+    y += (targetY - y) * 0.2;
+    ring.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    if (Math.abs(targetX - x) + Math.abs(targetY - y) > 0.3) requestAnimationFrame(follow);
+    else running = false;
+  };
+
+  window.addEventListener("pointermove", event => {
+    if (event.pointerType === "touch") return;
+    targetX = event.clientX;
+    targetY = event.clientY;
+    if (!ring.classList.contains("on")) { x = targetX; y = targetY; ring.classList.add("on"); }
+    ring.classList.toggle("big", Boolean(event.target.closest("a, button")));
+    if (!running) { running = true; requestAnimationFrame(follow); }
+  }, { passive: true });
+  document.documentElement.addEventListener("pointerleave", () => ring.classList.remove("on"));
+
+  /* হিরো: মাউসের নিচে আলো, আর ছবি মাউসের দিকে সামান্য সরে */
+  const hero = document.querySelector(".hero");
+  const portrait = document.querySelector(".portrait img");
+  hero.addEventListener("pointermove", event => {
+    const box = hero.getBoundingClientRect();
+    hero.style.setProperty("--mx", (event.clientX - box.left) + "px");
+    hero.style.setProperty("--my", (event.clientY - box.top) + "px");
+    hero.classList.add("lit");
+    const dx = (event.clientX - box.left) / box.width - 0.5;
+    const dy = (event.clientY - box.top) / box.height - 0.5;
+    portrait.style.transform = `translate(${dx * 14}px, ${dy * 10}px)`;
+  }, { passive: true });
+  hero.addEventListener("pointerleave", () => {
+    hero.classList.remove("lit");
+    portrait.style.transform = "";
+  });
+}
 
 /* থিম বদলানো */
 document.getElementById("theme").addEventListener("click", () => {
