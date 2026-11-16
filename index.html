@@ -389,21 +389,23 @@
   }
 
   /* ---------- pointer animation ---------- */
-  /* মাউসের পেছনে চলা বৃত্ত; difference মোডে যেকোনো রঙের উপর দেখা যায় */
+  /* মাউসের পেছনে চলা বৃত্ত ও তার প্রতিধ্বনি।
+     পুরো স্তরটি difference মোডে, তাই যেকোনো রঙের উপর দেখা যায়;
+     ভেতরের বৃত্তগুলো নিজেদের মধ্যে স্বাভাবিকভাবে মেশে */
+  .cursor-layer {
+    position: fixed; inset: 0; z-index: 20; pointer-events: none;
+    mix-blend-mode: difference; opacity: 0; transition: opacity .25s ease;
+  }
+  .cursor-layer.on { opacity: 1; }
   .cursor {
-    position: fixed; left: 0; top: 0; z-index: 20; pointer-events: none;
+    position: absolute; left: 0; top: 0;
     width: 30px; height: 30px; margin: -15px 0 0 -15px;
     border: 2px solid #fff; border-radius: 50%;
-    mix-blend-mode: difference; opacity: 0;
-    transition: width .2s ease, height .2s ease, margin .2s ease,
-                opacity .2s ease, background-color .2s ease;
+    will-change: transform;
   }
-  .cursor.on { opacity: var(--o, 1); }
-  .cursor.echo { border-width: 1.5px; }
-  .cursor.big {
-    width: 64px; height: 64px; margin: -32px 0 0 -32px;
-    background: rgba(255,255,255,.18);
-  }
+  .cursor.lead { transition: box-shadow .2s ease, background-color .2s ease; }
+  /* লিংক বা বোতামের উপর: মূল বৃত্ত বাইরের দিকে ফুলে ওঠে */
+  .cursor.lead.big { background: rgba(255,255,255,.18); box-shadow: 0 0 0 17px rgba(255,255,255,.18); }
   /* হিরো অংশে মাউসের নিচে নরম আলো */
   .hero::after {
     content: ""; position: absolute; inset: 0; pointer-events: none;
@@ -947,57 +949,44 @@ showSport(currentSport);
 const hasMouse = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const wantsMotion = !matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (hasMouse && wantsMotion) {
-  /* প্রথমটি মূল বৃত্ত, বাকি তিনটি তার "প্রতিধ্বনি": প্রতিটি আগেরটির চেয়ে ঝাপসা।
-     সংখ্যাগুলো হলো প্রতিটি বৃত্তের স্বচ্ছতা; তালিকায় সংখ্যা বাড়ালে প্রতিধ্বনি বাড়বে */
-  const rings = [1, 0.5, 0.28, 0.12].map((opacity, i) => {
+  /* প্রতিধ্বনি = মূল বৃত্তের অনেকগুলো ঝাপসা কপি, যেগুলো গায়ে গায়ে লেগে থাকে।
+     কপি বেশি আর ফাঁক কম বলে আলাদা বৃত্ত নয়, একটি মিলিয়ে যাওয়া লেজ দেখা যায় */
+  const ECHOES = 18;        /* প্রতিধ্বনির সংখ্যা */
+  const STICKINESS = 0.72;  /* প্রতিটি কপি আগেরটির কতটা কাছে থাকে (০ থেকে ১) */
+
+  const layer = document.createElement("div");
+  layer.className = "cursor-layer";
+  layer.setAttribute("aria-hidden", "true");
+  document.body.appendChild(layer);
+
+  const rings = [];
+  for (let i = 0; i <= ECHOES; i++) {
     const el = document.createElement("div");
-    el.className = i === 0 ? "cursor" : "cursor echo";
-    el.style.setProperty("--o", opacity);
-    el.setAttribute("aria-hidden", "true");
-    document.body.appendChild(el);
-    /* প্রতিটি প্রতিধ্বনি আগেরটির চেয়ে ২০% ছোট: ১, ০.৮, ০.৬, ০.৪ */
-    return { el, x: 0, y: 0, scale: 1 - i * 0.2, base: opacity };
-  });
+    el.className = i === 0 ? "cursor lead" : "cursor";
+    const fade = 1 - i / (ECHOES + 1);            /* ১ থেকে ধীরে ধীরে ০-র দিকে */
+    if (i > 0) {
+      el.style.opacity = (0.55 * fade * fade).toFixed(3);   /* লেজের দিকে দ্রুত ঝাপসা */
+      el.style.borderWidth = "1.5px";
+    }
+    layer.appendChild(el);
+    rings.push({ el, x: 0, y: 0, scale: 0.25 + 0.75 * fade });   /* লেজের দিকে ছোট */
+  }
   const ring = rings[0].el;
 
   let targetX = 0, targetY = 0, running = false;
 
-  /* মূল বৃত্ত মাউসকে অনুসরণ করে, আর প্রতিটি প্রতিধ্বনি তার আগের বৃত্তকে।
-     প্রতি ফ্রেমে বাকি দূরত্বের একটি অংশ এগোয় বলে সবগুলো শিকলের মতো পিছু নেয় */
-  const SIZE = 30;   /* মূল বৃত্তের ব্যাস (CSS-এর সঙ্গে মিল রেখে) */
-  const SPACE = 5;   /* দুই বৃত্তের কিনারার মাঝের ফাঁক */
-
-  let lastMove = 0, restTimer = 0;
-  const REST_AFTER = 140;   /* এত মিলিসেকেন্ড মাউস না নড়লে "থেমেছে" ধরা হয় */
-
+  /* মূল বৃত্ত মাউসের দিকে, আর প্রতিটি কপি তার আগের কপির দিকে প্রতি ফ্রেমে একটু করে এগোয়।
+     মাউস থামলে সবগুলো নিজে থেকেই মূল বৃত্তে এসে মিশে যায় */
   const follow = () => {
-    const resting = performance.now() - lastMove > REST_AFTER;
-    let moved = 0;
+    let leadX = targetX, leadY = targetY, moved = 0;
     rings.forEach((r, i) => {
-      let goalX = targetX, goalY = targetY;
-      if (i > 0) {
-        /* প্রতিধ্বনি আগের বৃত্তের ভেতরে ঢোকে না: দুই ব্যাসার্ধের যোগফল + ফাঁক,
-           এই দূরত্বে পেছনে থাকে, ট্রেনের বগির মতো */
-        const prev = rings[i - 1];
-        const prevRadius = (i === 1 && ring.classList.contains("big") ? 64 : SIZE * prev.scale) / 2;
-        const gap = prevRadius + (SIZE * r.scale) / 2 + SPACE;
-        const dx = prev.x - r.x, dy = prev.y - r.y;
-        const distance = Math.hypot(dx, dy);
-        if (resting) { goalX = prev.x; goalY = prev.y; }          /* থামলে: আগের বৃত্তের কেন্দ্রে ফিরে যায় */
-        else if (distance <= gap) { goalX = r.x; goalY = r.y; }
-        else {
-          goalX = prev.x - (dx / distance) * gap;
-          goalY = prev.y - (dy / distance) * gap;
-        }
-        /* যত কাছে আসে তত ঝাপসা; পুরো মিশে গেলে অদৃশ্য */
-        r.el.style.setProperty("--o", r.base * Math.min(1, distance / gap));
-      }
-      const ease = i === 0 ? 0.2 : (resting ? 0.14 : 0.35);
-      const stepX = (goalX - r.x) * ease, stepY = (goalY - r.y) * ease;
+      const ease = i === 0 ? 0.22 : STICKINESS;
+      const stepX = (leadX - r.x) * ease, stepY = (leadY - r.y) * ease;
       r.x += stepX;
       r.y += stepY;
       moved += Math.abs(stepX) + Math.abs(stepY);
       r.el.style.transform = `translate3d(${r.x}px, ${r.y}px, 0) scale(${r.scale})`;
+      leadX = r.x; leadY = r.y;
     });
     if (moved > 0.05) requestAnimationFrame(follow);
     else running = false;
@@ -1007,26 +996,14 @@ if (hasMouse && wantsMotion) {
     if (event.pointerType === "touch") return;
     targetX = event.clientX;
     targetY = event.clientY;
-    if (!ring.classList.contains("on")) {
-      /* প্রথমবার দেখানোর সময় প্রতিধ্বনিগুলো মূল বৃত্তের নিচে সারি করে বসে */
-      let offset = 0;
-      rings.forEach((r, i) => {
-        if (i > 0) offset += (SIZE * rings[i - 1].scale) / 2 + (SIZE * r.scale) / 2 + SPACE;
-        r.x = targetX; r.y = targetY + offset;
-        r.el.classList.add("on");
-      });
+    if (!layer.classList.contains("on")) {
+      rings.forEach(r => { r.x = targetX; r.y = targetY; });
+      layer.classList.add("on");
     }
     ring.classList.toggle("big", Boolean(event.target.closest("a, button")));
-    lastMove = performance.now();
-    const wake = () => { if (!running) { running = true; requestAnimationFrame(follow); } };
-    wake();
-    /* মাউস থামার একটু পরে আবার জাগানো, যাতে প্রতিধ্বনিগুলো ফিরে এসে মিশে যায় */
-    clearTimeout(restTimer);
-    restTimer = setTimeout(wake, REST_AFTER + 20);
+    if (!running) { running = true; requestAnimationFrame(follow); }
   }, { passive: true });
-  document.documentElement.addEventListener("pointerleave", () => {
-    rings.forEach(r => r.el.classList.remove("on"));
-  });
+  document.documentElement.addEventListener("pointerleave", () => layer.classList.remove("on"));
 
   /* হিরো: মাউসের নিচে আলো, আর ছবি মাউসের দিকে সামান্য সরে */
   const hero = document.querySelector(".hero");
