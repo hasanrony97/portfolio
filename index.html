@@ -398,7 +398,8 @@
     transition: width .2s ease, height .2s ease, margin .2s ease,
                 opacity .2s ease, background-color .2s ease;
   }
-  .cursor.on { opacity: 1; }
+  .cursor.on { opacity: var(--o, 1); }
+  .cursor.echo { border-width: 1.5px; }
   .cursor.big {
     width: 64px; height: 64px; margin: -32px 0 0 -32px;
     background: rgba(255,255,255,.18);
@@ -946,19 +947,33 @@ showSport(currentSport);
 const hasMouse = matchMedia("(hover: hover) and (pointer: fine)").matches;
 const wantsMotion = !matchMedia("(prefers-reduced-motion: reduce)").matches;
 if (hasMouse && wantsMotion) {
-  const ring = document.createElement("div");
-  ring.className = "cursor";
-  ring.setAttribute("aria-hidden", "true");
-  document.body.appendChild(ring);
+  /* প্রথমটি মূল বৃত্ত, বাকি তিনটি তার "প্রতিধ্বনি": প্রতিটি আগেরটির চেয়ে ঝাপসা।
+     সংখ্যাগুলো হলো প্রতিটি বৃত্তের স্বচ্ছতা; তালিকায় সংখ্যা বাড়ালে প্রতিধ্বনি বাড়বে */
+  const rings = [1, 0.5, 0.28, 0.12].map((opacity, i) => {
+    const el = document.createElement("div");
+    el.className = i === 0 ? "cursor" : "cursor echo";
+    el.style.setProperty("--o", opacity);
+    el.setAttribute("aria-hidden", "true");
+    document.body.appendChild(el);
+    return { el, x: 0, y: 0 };
+  });
+  const ring = rings[0].el;
 
-  let targetX = 0, targetY = 0, x = 0, y = 0, running = false;
+  let targetX = 0, targetY = 0, running = false;
 
-  /* বৃত্তটি প্রতি ফ্রেমে বাকি দূরত্বের ২০% এগোয়, তাই একটু পিছিয়ে নরমভাবে অনুসরণ করে */
+  /* মূল বৃত্ত মাউসকে অনুসরণ করে, আর প্রতিটি প্রতিধ্বনি তার আগের বৃত্তকে।
+     প্রতি ফ্রেমে বাকি দূরত্বের একটি অংশ এগোয় বলে সবগুলো শিকলের মতো পিছু নেয় */
   const follow = () => {
-    x += (targetX - x) * 0.2;
-    y += (targetY - y) * 0.2;
-    ring.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    if (Math.abs(targetX - x) + Math.abs(targetY - y) > 0.3) requestAnimationFrame(follow);
+    let leadX = targetX, leadY = targetY;
+    rings.forEach((r, i) => {
+      const ease = i === 0 ? 0.2 : 0.3;
+      r.x += (leadX - r.x) * ease;
+      r.y += (leadY - r.y) * ease;
+      r.el.style.transform = `translate3d(${r.x}px, ${r.y}px, 0)`;
+      leadX = r.x; leadY = r.y;
+    });
+    const last = rings[rings.length - 1];
+    if (Math.abs(targetX - last.x) + Math.abs(targetY - last.y) > 0.3) requestAnimationFrame(follow);
     else running = false;
   };
 
@@ -966,11 +981,15 @@ if (hasMouse && wantsMotion) {
     if (event.pointerType === "touch") return;
     targetX = event.clientX;
     targetY = event.clientY;
-    if (!ring.classList.contains("on")) { x = targetX; y = targetY; ring.classList.add("on"); }
+    if (!ring.classList.contains("on")) {
+      rings.forEach(r => { r.x = targetX; r.y = targetY; r.el.classList.add("on"); });
+    }
     ring.classList.toggle("big", Boolean(event.target.closest("a, button")));
     if (!running) { running = true; requestAnimationFrame(follow); }
   }, { passive: true });
-  document.documentElement.addEventListener("pointerleave", () => ring.classList.remove("on"));
+  document.documentElement.addEventListener("pointerleave", () => {
+    rings.forEach(r => r.el.classList.remove("on"));
+  });
 
   /* হিরো: মাউসের নিচে আলো, আর ছবি মাউসের দিকে সামান্য সরে */
   const hero = document.querySelector(".hero");
