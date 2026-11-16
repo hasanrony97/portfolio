@@ -964,17 +964,35 @@ if (hasMouse && wantsMotion) {
 
   /* মূল বৃত্ত মাউসকে অনুসরণ করে, আর প্রতিটি প্রতিধ্বনি তার আগের বৃত্তকে।
      প্রতি ফ্রেমে বাকি দূরত্বের একটি অংশ এগোয় বলে সবগুলো শিকলের মতো পিছু নেয় */
+  const SIZE = 30;   /* মূল বৃত্তের ব্যাস (CSS-এর সঙ্গে মিল রেখে) */
+  const SPACE = 5;   /* দুই বৃত্তের কিনারার মাঝের ফাঁক */
+
   const follow = () => {
-    let leadX = targetX, leadY = targetY;
+    let moved = 0;
     rings.forEach((r, i) => {
-      const ease = i === 0 ? 0.2 : 0.3;
-      r.x += (leadX - r.x) * ease;
-      r.y += (leadY - r.y) * ease;
+      let goalX = targetX, goalY = targetY;
+      if (i > 0) {
+        /* প্রতিধ্বনি আগের বৃত্তের ভেতরে ঢোকে না: দুই ব্যাসার্ধের যোগফল + ফাঁক,
+           এই দূরত্বে পেছনে থাকে, ট্রেনের বগির মতো */
+        const prev = rings[i - 1];
+        const prevRadius = (i === 1 && ring.classList.contains("big") ? 64 : SIZE * prev.scale) / 2;
+        const gap = prevRadius + (SIZE * r.scale) / 2 + SPACE;
+        const dx = prev.x - r.x, dy = prev.y - r.y;
+        const distance = Math.hypot(dx, dy);
+        if (distance <= gap) { goalX = r.x; goalY = r.y; }
+        else {
+          goalX = prev.x - (dx / distance) * gap;
+          goalY = prev.y - (dy / distance) * gap;
+        }
+      }
+      const ease = i === 0 ? 0.2 : 0.35;
+      const stepX = (goalX - r.x) * ease, stepY = (goalY - r.y) * ease;
+      r.x += stepX;
+      r.y += stepY;
+      moved += Math.abs(stepX) + Math.abs(stepY);
       r.el.style.transform = `translate3d(${r.x}px, ${r.y}px, 0) scale(${r.scale})`;
-      leadX = r.x; leadY = r.y;
     });
-    const last = rings[rings.length - 1];
-    if (Math.abs(targetX - last.x) + Math.abs(targetY - last.y) > 0.3) requestAnimationFrame(follow);
+    if (moved > 0.05) requestAnimationFrame(follow);
     else running = false;
   };
 
@@ -983,7 +1001,13 @@ if (hasMouse && wantsMotion) {
     targetX = event.clientX;
     targetY = event.clientY;
     if (!ring.classList.contains("on")) {
-      rings.forEach(r => { r.x = targetX; r.y = targetY; r.el.classList.add("on"); });
+      /* প্রথমবার দেখানোর সময় প্রতিধ্বনিগুলো মূল বৃত্তের নিচে সারি করে বসে */
+      let offset = 0;
+      rings.forEach((r, i) => {
+        if (i > 0) offset += (SIZE * rings[i - 1].scale) / 2 + (SIZE * r.scale) / 2 + SPACE;
+        r.x = targetX; r.y = targetY + offset;
+        r.el.classList.add("on");
+      });
     }
     ring.classList.toggle("big", Boolean(event.target.closest("a, button")));
     if (!running) { running = true; requestAnimationFrame(follow); }
